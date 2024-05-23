@@ -12,7 +12,7 @@ const emit = defineEmits<{
 const onInput = debounce((event: Event) => {
   const input = event.target as HTMLInputElement
 
-  if (input.value) emit('input', input.value)
+  emit('input', input.value)
 })
 
 </script>

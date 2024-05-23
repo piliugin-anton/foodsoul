@@ -3,6 +3,7 @@
   <div class="loading">
     <span v-if="isLoading">Идёт загрузка...</span>
   </div>
+  <p v-if="isQueryEmpty">Введите в поле ваш запрос.</p>
   <SearchResult
     v-if="results.length"
     v-for="(result, index) in results"
@@ -13,7 +14,6 @@
     class="search_result"
   />
   <p v-else-if="!isLoading && !isQueryEmpty">Нет результатов.</p>
-  <p v-if="isQueryEmpty">Введите в поле ваш запрос.</p>
 </template>
 
 <script setup lang="ts">
@@ -30,7 +30,13 @@ const isLoading = ref(false)
 const isQueryEmpty = ref(true)
 
 const handleInput = async (query: string) => {
-  if (isQueryEmpty.value) isQueryEmpty.value = false
+  if (query) {
+    isQueryEmpty.value = false
+  } else {
+    isQueryEmpty.value = true
+
+    return
+  }
 
   isLoading.value = true
 
