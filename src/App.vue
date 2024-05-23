@@ -1,9 +1,10 @@
 <template>
   <SearchInput class="search-input" @input="handleInput" />
-  <div class="loading">
-    <span v-if="isLoading">Идёт загрузка...</span>
+  <div class="message">
+    <p v-if="isLoading">Идёт загрузка...</p>
+    <p v-if="isQueryEmpty">Введите в поле ваш запрос.</p>
+    <p v-else-if="!isLoading && !results.length">Нет результатов.</p>
   </div>
-  <p v-if="isQueryEmpty">Введите в поле ваш запрос.</p>
   <SearchResult
     v-if="results.length"
     v-for="(result, index) in results"
@@ -13,7 +14,6 @@
     :lon="result.lon"
     class="search_result"
   />
-  <p v-else-if="!isLoading && !isQueryEmpty">Нет результатов.</p>
 </template>
 
 <script setup lang="ts">
@@ -89,7 +89,7 @@ const handleInput = async (query: string) => {
   margin-bottom: 16px;
 }
 
-.loading {
+.message {
   display: flex;
   justify-content: center;
   align-items: center;
