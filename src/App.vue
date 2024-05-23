@@ -9,7 +9,8 @@
     :lon="result.lon"
     class="search_result"
   />
-  <p v-else>Нет результатов. Введите в поле ваш запрос.</p>
+  <p v-else-if="!isLoading">Нет результатов. Введите в поле ваш запрос.</p>
+  <p v-if="isLoading">Идёт загрузка...</p>
 </template>
 
 <script setup lang="ts">
