@@ -2,7 +2,7 @@
     <div class="search-result">
         <p class="search-result__name">
             Название: {{ props.name }}
-        </p>
+         </p>
         <p class="search-result__geoposition">
             Широта: {{ props.lat }}, долгота: {{ props.lon }}
         </p>

@@ -6,7 +6,7 @@ export default class API {
         timeout: 5000
     })
 
-    search(query: string): Promise<NominatimResponse[]> {
+    search(query: string): Promise<APIResponse<NominatimResponse[]>> {
         return this.instance.get('/search', {
             params: {
                 query
@@ -14,6 +14,12 @@ export default class API {
         })
         .then((response) => response.data)
     }
+}
+
+export interface APIResponse<T> {
+    success: boolean
+    error?: string
+    result: T
 }
 
 export interface GeocodeAddress {

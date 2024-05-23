@@ -49,6 +49,7 @@ app.use('/search', (req, res, next) => {
 app.get('/search', async (req, res) => {
   try {
     const result = await axios.get('https://nominatim.openstreetmap.org/search', {
+      timeout: 2500,
       params: {
         q: req.query.query,
         format: 'jsonv2'
@@ -56,12 +57,12 @@ app.get('/search', async (req, res) => {
     })
 
     if (!result.data) {
-      return res.json([])
+      return res.json({ success: false, error: 'Сервер вернул пустой ответ' })
     }
 
-    res.json(result.data)
+    res.json({ success: true, result: result.data })
   } catch (ex) {
-    res.sendStatus(500)
+    res.status(500).json({ success: false, error: 'Не удалось получить ответ от сервера' })
   }
 })
 

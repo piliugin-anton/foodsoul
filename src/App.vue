@@ -1,6 +1,7 @@
 <template>
   <SearchInput class="search-input" @input="handleInput" />
   <SearchResult
+    v-if="results.length"
     v-for="(result, index) in results"
     :key="`search-result${index}`"
     :name="result.display_name"
@@ -8,27 +9,65 @@
     :lon="result.lon"
     class="search_result"
   />
+  <p v-else>Нет результатов. Введите в поле ваш запрос.</p>
 </template>
 
 <script setup lang="ts">
-import { provide, ref } from 'vue'
+import { inject, ref } from 'vue'
+import Snackbar from 'awesome-snackbar'
 import API, { NominatimResponse } from './api'
 import SearchInput from './components/SearchInput.vue'
 import SearchResult from './components/SearchResult.vue'
 
-const api = new API()
-provide('api', api)
+const api = inject('api') as API
 
 const results = ref<NominatimResponse[]>([])
+const isLoading = ref(false)
 
 const handleInput = async (query: string) => {
+  isLoading.value = true
+
   try {
     const searchResults = await api.search(query)
-    results.value = searchResults
-    console.log(searchResults)
+    if (!searchResults.error) {
+      results.value = searchResults.result
+    } else {
+      new Snackbar(searchResults.error, {
+        position: 'bottom-right',
+        style: {
+          container: [
+            ['background-color', 'red'],
+            ['border-radius', '5px']
+          ],
+          message: [
+            ['color', '#eee'],
+          ],
+          bold: [
+            ['font-weight', 'bold'],
+          ]
+        }
+      })
+    }
+    
   } catch (ex: any) {
-    console.log(ex)
+    new Snackbar('Ошибка при выполнении запроса', {
+      position: 'bottom-right',
+      style: {
+        container: [
+          ['background-color', 'red'],
+          ['border-radius', '5px']
+        ],
+        message: [
+          ['color', '#eee'],
+        ],
+        bold: [
+          ['font-weight', 'bold'],
+        ]
+      }
+    })
   }
+
+  isLoading.value = false
 }
 </script>
 

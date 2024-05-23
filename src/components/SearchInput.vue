@@ -11,7 +11,8 @@ const emit = defineEmits<{
 
 const onInput = debounce((event: Event) => {
   const input = event.target as HTMLInputElement
-  emit('input', input.value)
+
+  if (input.value) emit('input', input.value)
 })
 
 </script>
@@ -19,5 +20,6 @@ const onInput = debounce((event: Event) => {
 <style scoped lang="scss">
 .input {
   padding: 8px;
+  width: 304px;
 }
 </style>
