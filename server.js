@@ -38,9 +38,7 @@ if (!isProduction) {
 
 app.use('/search', (req, res, next) => {
   if (!req.query.query) {
-    next(new Error('Неверный запрос'))
-
-    return
+    return res.json({ success: false, error: 'Введите поисковый запрос' })
   }
 
   next()
