@@ -76,11 +76,15 @@ const handleInput = async (query: string) => {
 
 <style scoped lang="scss">
 .search-input {
-  margin-bottom: 32px;
+  margin-bottom: 16px;
 }
 
 .loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 32px;
+  margin-bottom: 16px;
 }
 
 .search-result {
