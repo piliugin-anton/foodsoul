@@ -1,6 +1,8 @@
 <template>
   <SearchInput class="search-input" @input="handleInput" />
-  <p v-if="isLoading">Идёт загрузка...</p>
+  <div class="loading">
+    <span v-if="isLoading">Идёт загрузка...</span>
+  </div>
   <SearchResult
     v-if="results.length"
     v-for="(result, index) in results"
@@ -75,6 +77,10 @@ const handleInput = async (query: string) => {
 <style scoped lang="scss">
 .search-input {
   margin-bottom: 32px;
+}
+
+.loading {
+  height: 32px;
 }
 
 .search-result {
