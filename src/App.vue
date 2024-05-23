@@ -12,7 +12,8 @@
     :lon="result.lon"
     class="search_result"
   />
-  <p v-else-if="!isLoading">Нет результатов. Введите в поле ваш запрос.</p>
+  <p v-else-if="!isLoading && !isQueryEmpty">Нет результатов.</p>
+  <p v-if="isQueryEmpty">Введите в поле ваш запрос.</p>
 </template>
 
 <script setup lang="ts">
@@ -26,8 +27,11 @@ const api = inject('api') as API
 
 const results = ref<NominatimResponse[]>([])
 const isLoading = ref(false)
+const isQueryEmpty = ref(true)
 
 const handleInput = async (query: string) => {
+  if (isQueryEmpty.value) isQueryEmpty.value = false
+
   isLoading.value = true
 
   try {
