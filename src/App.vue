@@ -18,12 +18,13 @@
 
 <script setup lang="ts">
 import { inject, ref } from 'vue'
-import Snackbar from 'awesome-snackbar'
 import API, { NominatimResponse } from './api'
+import { SnackBarMessage } from './helpers'
 import SearchInput from './components/SearchInput.vue'
 import SearchResult from './components/SearchResult.vue'
 
 const api = inject('api') as API
+const snackbar = inject('snackbar') as SnackBarMessage
 
 const results = ref<NominatimResponse[]>([])
 const isLoading = ref(false)
@@ -45,39 +46,11 @@ const handleInput = async (query: string) => {
     if (!searchResults.error) {
       results.value = searchResults.result
     } else {
-      new Snackbar(searchResults.error, {
-        position: 'bottom-right',
-        style: {
-          container: [
-            ['background-color', 'red'],
-            ['border-radius', '5px']
-          ],
-          message: [
-            ['color', '#eee'],
-          ],
-          bold: [
-            ['font-weight', 'bold'],
-          ]
-        }
-      })
+      snackbar.error(searchResults.error)
     }
     
   } catch (ex: any) {
-    new Snackbar('Ошибка при выполнении запроса', {
-      position: 'bottom-right',
-      style: {
-        container: [
-          ['background-color', 'red'],
-          ['border-radius', '5px']
-        ],
-        message: [
-          ['color', '#eee'],
-        ],
-        bold: [
-          ['font-weight', 'bold'],
-        ]
-      }
-    })
+    snackbar.error('Ошибка при выполнении запроса')
   }
 
   isLoading.value = false

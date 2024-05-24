@@ -1,5 +1,6 @@
 import { createSSRApp } from 'vue'
 import API from './api'
+import { SnackBarMessage } from './helpers'
 import App from './App.vue'
 
 // SSR requires a fresh app instance per request, therefore we export a function
@@ -8,8 +9,8 @@ import App from './App.vue'
 export function createApp() {
   const app = createSSRApp(App)
 
-  const api = new API()
-  app.provide('api', api)
+  app.provide('api', new API())
+  app.provide('snackbar', new SnackBarMessage())
 
   return { app }
 }
