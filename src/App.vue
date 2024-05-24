@@ -2,7 +2,7 @@
   <SearchInput class="search-input" @input="handleInput" />
   <div class="message">
     <p v-if="isLoading">Идёт загрузка...</p>
-    <p v-else-if="error" class="error">{{ error }}</p>
+    <p v-else-if="message" class="message">{{ message }}</p>
     <p v-else-if="!isLoading && !results.length">Нет результатов.</p>
   </div>
   <SearchResult
@@ -28,11 +28,11 @@ const snackbar = inject('snackbar') as SnackBarMessage
 
 const results = ref<NominatimResponse[]>([])
 const isLoading = ref<boolean>(false)
-const error = ref<string>('Введите в поле ваш запрос.')
+const message = ref<string>('Введите в поле ваш запрос.')
 
 const handleInput = async (query: string) => {
   if (!query) {
-    error.value = 'Введите в поле ваш запрос.'
+    message.value = 'Введите в поле ваш запрос.'
 
     return
   }
@@ -42,17 +42,17 @@ const handleInput = async (query: string) => {
   try {
     const searchResults = await api.search(query)
     if (!searchResults.error) {
-      error.value = ''
+      message.value = `Найдено ${searchResults.result.length} элементов`
       results.value = searchResults.result
     } else {
-      error.value = searchResults.error
+      message.value = searchResults.error
       snackbar.error({ message: searchResults.error })
     }
     
   } catch (ex: any) {
-    error.value = 'Ошибка при выполнении запроса'
+    message.value = 'Ошибка при выполнении запроса'
 
-    snackbar.error({ message: error.value, actionText: 'Повторить?', onAction: () => handleInput(query) })
+    snackbar.error({ message: message.value, actionText: 'Повторить?', onAction: () => handleInput(query) })
   }
 
   isLoading.value = false
