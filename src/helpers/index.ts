@@ -21,7 +21,7 @@ export class SnackBarMessage {
   error(options: SnackBarOptions) {
     const {
       message,
-      timeout = 7000,
+      timeout = 10000,
       actionText,
       onAction,
       position = 'bottom-right'
