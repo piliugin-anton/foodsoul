@@ -46,11 +46,11 @@ const handleInput = async (query: string) => {
     if (!searchResults.error) {
       results.value = searchResults.result
     } else {
-      snackbar.error(searchResults.error)
+      snackbar.error({ message: searchResults.error })
     }
     
   } catch (ex: any) {
-    snackbar.error('Ошибка при выполнении запроса')
+    snackbar.error({ message: 'Ошибка при выполнении запроса', actionText: 'Повторить?', onAction: () => handleInput(query) })
   }
 
   isLoading.value = false

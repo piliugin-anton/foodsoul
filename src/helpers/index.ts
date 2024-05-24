@@ -10,9 +10,25 @@ export function debounce<T extends (...args: Parameters<T>) => void>(this: ThisP
   }
 }
 
+interface SnackBarOptions {
+  message: string
+  timeout?: number
+  position?: string
+  actionText?: string
+  onAction?: (() => void)
+}
 export class SnackBarMessage {
-  error(message: string, position = 'bottom-right') {
-    new Snackbar(message, {
+  error(options: SnackBarOptions) {
+    const {
+      message,
+      timeout = 7000,
+      actionText,
+      onAction,
+      position = 'bottom-right'
+    } = options
+
+    return new Snackbar(message, {
+      timeout,
       position,
       style: {
         container: [
@@ -25,7 +41,9 @@ export class SnackBarMessage {
         bold: [
           ['font-weight', 'bold'],
         ]
-      }
+      },
+      actionText,
+      onAction
     })
   }
 }
