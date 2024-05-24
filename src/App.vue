@@ -2,14 +2,7 @@
   <SearchInput class="search-input" @input="handleInput" />
   <div class="message">
     <p v-if="isLoading">Идёт загрузка...</p>
-    <p v-else-if="error" class="error-retry">
-      <span class="error-retry__error">{{ error }}</span>
-
-      <a href="#" class="error-retry__retry" @click="() => handleInput(lastQuery)">
-        Повторить?
-      </a>
-    </p>
-    <p v-if="isQueryEmpty">Введите в поле ваш запрос.</p>
+    <p v-else-if="error" class="error">{{ error }}</p>
     <p v-else-if="!isLoading && !results.length && !error">Нет результатов.</p>
   </div>
   <SearchResult
@@ -35,17 +28,11 @@ const snackbar = inject('snackbar') as SnackBarMessage
 
 const results = ref<NominatimResponse[]>([])
 const isLoading = ref<boolean>(false)
-const isQueryEmpty = ref<boolean>(true)
-const error = ref<string>('')
-const lastQuery = ref<string>('')
+const error = ref<string>('Введите в поле ваш запрос.')
 
 const handleInput = async (query: string) => {
-  lastQuery.value = query
-
-  if (query) {
-    isQueryEmpty.value = false
-  } else {
-    isQueryEmpty.value = true
+  if (!query) {
+    error.value = 'Введите в поле ваш запрос.'
 
     return
   }
@@ -63,7 +50,7 @@ const handleInput = async (query: string) => {
     }
     
   } catch (ex: any) {
-    error.value = 'Ошибка при выполнении запроса.'
+    error.value = 'Ошибка при выполнении запроса'
 
     snackbar.error({ message: error.value, actionText: 'Повторить?', onAction: () => handleInput(query) })
   }
@@ -81,7 +68,7 @@ const handleInput = async (query: string) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 48px;
+  height: 32px;
   margin-bottom: 16px;
 }
 
