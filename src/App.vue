@@ -55,8 +55,10 @@ const handleInput = async (query: string) => {
   try {
     const searchResults = await api.search(query)
     if (!searchResults.error) {
+      searchResults.error = ''
       results.value = searchResults.result
     } else {
+      error.value = searchResults.error
       snackbar.error({ message: searchResults.error })
     }
     
