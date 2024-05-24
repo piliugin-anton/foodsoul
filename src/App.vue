@@ -81,7 +81,7 @@ const handleInput = async (query: string) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 32px;
+  min-height: 48px;
   margin-bottom: 16px;
 }
 
