@@ -3,7 +3,7 @@
   <div class="message">
     <p v-if="isLoading">Идёт загрузка...</p>
     <p v-else-if="error" class="error">{{ error }}</p>
-    <p v-else-if="!isLoading && !results.length && !error">Нет результатов.</p>
+    <p v-else-if="!isLoading && !results.length">Нет результатов.</p>
   </div>
   <SearchResult
     v-if="results.length"
